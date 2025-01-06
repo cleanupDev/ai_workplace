@@ -1,13 +1,13 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import ProjectManagement from '@/components/project-management'
-import DevelopmentWorkspace from '@/components/development-workspace'
+import { useState } from "react";
+import ProjectManagement from "@/components/project-management";
+import DevelopmentWorkspace from "@/components/development-workspace";
 
-type ChatType = 'tech-lead' | 'product-owner' | 'stakeholder' | 'tasks'
+type ChatType = "tech-lead" | "product-owner" | "stakeholder" | "tasks";
 
 export default function Workspace() {
-  const [activeChat, setActiveChat] = useState<ChatType>('tech-lead')
+  const [activeChat, setActiveChat] = useState<ChatType>("tech-lead");
 
   return (
     <div className="flex flex-col h-screen bg-slate-950">
@@ -29,13 +29,15 @@ export default function Workspace() {
           <path d="M15 13v2" />
           <path d="M9 13v2" />
         </svg>
-        <h1 className="text-lg font-semibold text-slate-200">Tech Lead AI</h1>
+        <h1 className="text-lg font-semibold text-slate-200">AI Workplace</h1>
       </header>
       <div className="flex flex-1 overflow-hidden">
-        <ProjectManagement activeChat={activeChat} setActiveChat={setActiveChat} />
+        <ProjectManagement
+          activeChat={activeChat}
+          setActiveChat={setActiveChat}
+        />
         <DevelopmentWorkspace />
       </div>
     </div>
-  )
+  );
 }
-

@@ -5,7 +5,7 @@ import { Send, Bot, User, Users, CheckSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SprintGoals from "./sprint-goals";
 import CurrentTask from "./current-task";
 import TechLeadChat from "./tech-lead-chat";

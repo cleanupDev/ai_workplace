@@ -3,6 +3,7 @@
 import { useState } from "react";
 import ProjectManagement from "@/components/project-management";
 import DevelopmentWorkspace from "@/components/development-workspace";
+import { Header } from "@/components/ui/header";
 
 type ChatType = "tech-lead" | "product-owner" | "stakeholder" | "tasks";
 
@@ -11,7 +12,9 @@ export default function Workspace() {
 
   return (
     <div className="flex flex-col h-screen bg-slate-950">
-      <header className="flex items-center gap-2 p-2 bg-slate-900">
+      <Header />
+
+      {/* <header className="flex items-center gap-2 p-2 bg-slate-900">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -30,7 +33,7 @@ export default function Workspace() {
           <path d="M9 13v2" />
         </svg>
         <h1 className="text-lg font-semibold text-slate-200">AI Workplace</h1>
-      </header>
+      </header> */}
       <div className="flex flex-1 overflow-hidden">
         <ProjectManagement
           activeChat={activeChat}

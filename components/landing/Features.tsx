@@ -12,7 +12,7 @@ export function Features() {
       icon: Coffee,
       title: "Unlimited Coffee Breaks*",
       description:
-        "*As long as you meet your KPIs and have your camera on\nNot available on Free Trial",
+        "*As long as you meet your KPIs and have your camera on (Not available on Free Trial)",
     },
     {
       icon: Brain,
@@ -36,7 +36,9 @@ export function Features() {
           <Card key={index} className="bg-slate-900 border-slate-800">
             <CardHeader>
               <feature.icon className="w-10 h-10 text-emerald-500 mb-2" />
-              <CardTitle>{feature.title}</CardTitle>
+              <CardTitle className="text-sm  text-emerald-500 mb-2">
+                {feature.title}
+              </CardTitle>
               <CardDescription className="text-slate-400">
                 {feature.description}
               </CardDescription>

@@ -66,7 +66,9 @@ export function PricingTiers() {
         {tiers.map((tier) => (
           <Card key={tier.name} className="bg-slate-900 border-slate-800">
             <CardHeader>
-              <CardTitle className="text-2xl">{tier.name}</CardTitle>
+              <CardTitle className="text-2xl  text-emerald-500 mb-2">
+                {tier.name}
+              </CardTitle>
               <CardDescription className="text-slate-400">
                 {tier.description}
               </CardDescription>
@@ -76,7 +78,7 @@ export function PricingTiers() {
                 {tier.price}
                 <span className="text-lg text-slate-400">/month</span>
               </div>
-              <ul className="space-y-2">
+              <ul className="space-y-2 text-slate-400">
                 {tier.features.map((feature) => (
                   <li key={feature} className="flex items-center gap-2">
                     <CheckCircle className="w-5 h-5 text-emerald-500" />

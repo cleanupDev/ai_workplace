@@ -23,8 +23,7 @@ export function Hero() {
           </Button>
           <Button
             size="lg"
-            variant="outline"
-            className="border-slate-700 text-slate-300 hover:text-slate-100"
+            className="bg-emerald-500 hover:bg-emerald-600"
             asChild
           >
             <Link href="/dashboard">View Performance Metrics</Link>

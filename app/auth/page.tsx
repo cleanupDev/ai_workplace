@@ -43,14 +43,18 @@ export default function AuthPage() {
             <TabsContent value="login">
               <form onSubmit={handleSubmit}>
                 <CardHeader>
-                  <CardTitle>Welcome back, human resource</CardTitle>
+                  <CardTitle className="text-emerald-500 mb-2">
+                    Welcome back, human resource
+                  </CardTitle>
                   <CardDescription>
                     Enter your credentials to access your AI workplace
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">
+                      <span className="text-emerald-500">Email</span>
+                    </Label>
                     <Input
                       id="email"
                       type="email"
@@ -59,7 +63,9 @@ export default function AuthPage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
+                    <Label htmlFor="password">
+                      <span className="text-emerald-500">Password</span>
+                    </Label>
                     <Input id="password" type="password" required />
                   </div>
                 </CardContent>
@@ -77,18 +83,24 @@ export default function AuthPage() {
             <TabsContent value="signup">
               <form onSubmit={handleSubmit}>
                 <CardHeader>
-                  <CardTitle>Join the AI workforce</CardTitle>
+                  <CardTitle className="text-emerald-500 mb-2">
+                    Join the AI workforce
+                  </CardTitle>
                   <CardDescription>
                     Create your account to start your AI-managed career
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name">Full Name</Label>
+                    <Label htmlFor="name">
+                      <span className="text-emerald-500">Full Name</span>
+                    </Label>
                     <Input id="name" placeholder="John Doe" required />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">
+                      <span className="text-emerald-500">Email</span>
+                    </Label>
                     <Input
                       id="email"
                       type="email"
@@ -97,11 +109,15 @@ export default function AuthPage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
+                    <Label htmlFor="password">
+                      <span className="text-emerald-500">Password</span>
+                    </Label>
                     <Input id="password" type="password" required />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="confirm-password">Confirm Password</Label>
+                    <Label htmlFor="confirm-password">
+                      <span className="text-emerald-500">Confirm Password</span>
+                    </Label>
                     <Input id="confirm-password" type="password" required />
                   </div>
                 </CardContent>

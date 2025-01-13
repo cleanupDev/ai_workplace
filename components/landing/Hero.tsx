@@ -19,7 +19,7 @@ export function Hero() {
             className="bg-emerald-500 hover:bg-emerald-600"
             asChild
           >
-            <Link href="#pricing">Submit Your Application</Link>
+            <Link href="/auth">Submit Your Application</Link>
           </Button>
           <Button
             size="lg"

@@ -13,6 +13,9 @@ export function Header() {
       <Link href="/" className="flex items-center gap-2">
         <Terminal className="w-6 h-6 text-emerald-500" />
         <span className="text-xl font-mono font-bold">AI Workplace</span>
+        <span className="text-xs font-bold text-emerald-500 animate-pulse bg-blue-500/10 px-2 py-0.5 rounded-full">
+          Coming soon...
+        </span>
       </Link>
       <nav>
         {!pathname.startsWith("/auth") && (

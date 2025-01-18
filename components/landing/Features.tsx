@@ -29,7 +29,7 @@ export function Features() {
   return (
     <section className="py-16" id="features">
       <h2 className="text-3xl font-bold text-center mb-12">
-        Your New AI Overlord Offers
+        Your New AI Workplace Benefits
       </h2>
       <div className="grid md:grid-cols-3 gap-6">
         {features.map((feature, index) => (

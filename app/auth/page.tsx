@@ -16,18 +16,111 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Header } from "@/components/landing/Header";
 import { Footer } from "@/components/landing/Footer";
+import { createClient } from "@/utils/supabase/client";
+import { toast } from "sonner";
+import { AuthError } from "@supabase/supabase-js";
 
 export default function AuthPage() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const supabase = createClient();
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setIsLoading(false);
-    router.push("/dashboard");
+
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      router.refresh();
+      router.push("/dashboard");
+      toast.success("Successfully logged in!");
+    } catch (error) {
+      if (error instanceof AuthError) {
+        toast.error(error.message);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsLoading(true);
+
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const confirmPassword = formData.get("confirm-password") as string;
+    const name = formData.get("name") as string;
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: name,
+          },
+          emailRedirectTo: `${location.origin}/auth/callback`,
+        },
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      toast.success("Check your email to confirm your account!");
+      router.push("/auth?tab=login");
+    } catch (error) {
+      if (error instanceof AuthError) {
+        toast.error(error.message);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleOAuthSignIn = async (provider: 'github' | 'google') => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: `${location.origin}/auth/callback`,
+        },
+      });
+
+      if (error) {
+        throw error;
+      }
+    } catch (error) {
+      if (error instanceof AuthError) {
+        toast.error(error.message);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+    }
   };
 
   return (
@@ -41,7 +134,7 @@ export default function AuthPage() {
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
             </TabsList>
             <TabsContent value="login">
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleLogin}>
                 <CardHeader>
                   <CardTitle className="text-emerald-500 mb-2">
                     Welcome back, human resource
@@ -57,6 +150,7 @@ export default function AuthPage() {
                     </Label>
                     <Input
                       id="email"
+                      name="email"
                       type="email"
                       placeholder="human@example.com"
                       required
@@ -66,7 +160,35 @@ export default function AuthPage() {
                     <Label htmlFor="password">
                       <span className="text-emerald-500">Password</span>
                     </Label>
-                    <Input id="password" type="password" required />
+                    <Input id="password" name="password" type="password" required />
+                  </div>
+                  <div className="space-y-4">
+                    <div className="relative">
+                      <div className="absolute inset-0 flex items-center">
+                        <span className="w-full border-t border-slate-700" />
+                      </div>
+                      <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-slate-900 px-2 text-slate-400">Or continue with</span>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="bg-transparent border-slate-700 hover:bg-slate-800"
+                        onClick={() => handleOAuthSignIn('github')}
+                      >
+                        GitHub
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="bg-transparent border-slate-700 hover:bg-slate-800"
+                        onClick={() => handleOAuthSignIn('google')}
+                      >
+                        Google
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
                 <CardFooter>
@@ -81,7 +203,7 @@ export default function AuthPage() {
               </form>
             </TabsContent>
             <TabsContent value="signup">
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSignUp}>
                 <CardHeader>
                   <CardTitle className="text-emerald-500 mb-2">
                     Join the AI workforce
@@ -95,7 +217,7 @@ export default function AuthPage() {
                     <Label htmlFor="name">
                       <span className="text-emerald-500">Full Name</span>
                     </Label>
-                    <Input id="name" placeholder="John Doe" required />
+                    <Input id="name" name="name" placeholder="John Doe" required />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="email">
@@ -103,6 +225,7 @@ export default function AuthPage() {
                     </Label>
                     <Input
                       id="email"
+                      name="email"
                       type="email"
                       placeholder="human@example.com"
                       required
@@ -112,13 +235,41 @@ export default function AuthPage() {
                     <Label htmlFor="password">
                       <span className="text-emerald-500">Password</span>
                     </Label>
-                    <Input id="password" type="password" required />
+                    <Input id="password" name="password" type="password" required />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="confirm-password">
                       <span className="text-emerald-500">Confirm Password</span>
                     </Label>
-                    <Input id="confirm-password" type="password" required />
+                    <Input id="confirm-password" name="confirm-password" type="password" required />
+                  </div>
+                  <div className="space-y-4">
+                    <div className="relative">
+                      <div className="absolute inset-0 flex items-center">
+                        <span className="w-full border-t border-slate-700" />
+                      </div>
+                      <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-slate-900 px-2 text-slate-400">Or continue with</span>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="bg-transparent border-slate-700 hover:bg-slate-800"
+                        onClick={() => handleOAuthSignIn('github')}
+                      >
+                        GitHub
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="bg-transparent border-slate-700 hover:bg-slate-800"
+                        onClick={() => handleOAuthSignIn('google')}
+                      >
+                        Google
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
                 <CardFooter>

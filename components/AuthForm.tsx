@@ -23,6 +23,7 @@ export default function AuthForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createClient();
+  const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL;
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -42,10 +43,11 @@ export default function AuthForm() {
         throw error;
       }
 
-      router.refresh();
+      // Get the redirectTo parameter *before* redirecting.
       const redirectTo = searchParams.get('redirectTo') || '/dashboard';
-      router.push(redirectTo);
+      router.push(redirectTo); // Redirect directly, no refresh needed.
       toast.success("Successfully logged in!");
+
     } catch (error) {
       if (error instanceof AuthError) {
         toast.error(error.message);
@@ -81,7 +83,7 @@ export default function AuthForm() {
           data: {
             full_name: name,
           },
-          emailRedirectTo: `${location.origin}/auth/callback`,
+          emailRedirectTo: `${baseUrl}/auth/callback`,
         },
       });
 
@@ -90,7 +92,7 @@ export default function AuthForm() {
       }
 
       toast.success("Check your email to confirm your account!");
-      router.push("/auth?tab=login");
+      router.push("/auth?tab=login"); // Redirect to login tab after signup
     } catch (error) {
       if (error instanceof AuthError) {
         toast.error(error.message);
@@ -107,7 +109,7 @@ export default function AuthForm() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${location.origin}/auth/callback`,
+          redirectTo: `${baseUrl}/auth/callback`,
         },
       });
 

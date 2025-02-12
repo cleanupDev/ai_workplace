@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -99,6 +99,18 @@ export default function VirtualWaterCooler() {
   const [activeChat, setActiveChat] = useState(0);
   const [stressLevel, setStressLevel] = useState(0);
 
+  const handleNoResponse = useCallback((chatIndex: number) => {
+    setChats((prevChats) => {
+      const newChats = [...prevChats];
+      const chat = { ...newChats[chatIndex] };
+      chat.likenessScore = Math.max(0, chat.likenessScore - 10);
+      chat.isResponding = false; // Ensure no double responses
+      newChats[chatIndex] = chat;
+      return newChats;
+    });
+    setStressLevel((prev) => Math.min(100, prev + 15));
+  }, []); // Empty dependency array because it only uses setChats and setStressLevel
+
   useEffect(() => {
     if (isOnBreak && breakTime > 0) {
       const timer = setTimeout(() => setBreakTime(breakTime - 1), 1000);
@@ -130,7 +142,7 @@ export default function VirtualWaterCooler() {
         handleNoResponse(chats.indexOf(chat));
       }
     });
-  }, [chats]);
+  }, [chats, handleNoResponse]); // Correct dependency array
 
   const startBreak = () => {
     setIsOnBreak(true);
@@ -209,41 +221,6 @@ export default function VirtualWaterCooler() {
     }, 1000);
 
     setStressLevel((prev) => Math.min(100, prev + 5));
-  };
-
-  const handleNoResponse = (chatIndex: number) => {
-    setChats((prevChats) => {
-      const newChats = [...prevChats];
-      const chat = { ...newChats[chatIndex] };
-      chat.messages.push({
-        sender: "System",
-        content:
-          "You took too long to respond! Your AI coworker looks disappointed.",
-        avatar: "/placeholder.svg?height=40&width=40",
-      });
-      chat.likenessScore = Math.max(0, chat.likenessScore - 5);
-      chat.isResponding = false;
-      chat.responseTime = 15;
-      newChats[chatIndex] = chat;
-      return newChats;
-    });
-
-    setTimeout(() => {
-      setChats((prevChats) => {
-        const newChats = [...prevChats];
-        const chat = { ...newChats[chatIndex] };
-        chat.messages.push({
-          sender: chat.coworker.name,
-          content: getRandomDialogue(),
-          avatar: chat.coworker.avatar,
-        });
-        chat.isResponding = true;
-        newChats[chatIndex] = chat;
-        return newChats;
-      });
-    }, 2000);
-
-    setStressLevel((prev) => Math.min(100, prev + 10));
   };
 
   return (

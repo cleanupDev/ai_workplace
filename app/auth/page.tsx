@@ -106,10 +106,11 @@ function AuthContent() {
 
   const handleOAuthSignIn = async (provider: 'github' | 'google') => {
     try {
+      const redirectTo = searchParams.get('redirectTo') || '/dashboard';
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${location.origin}/auth/callback`,
+          redirectTo: `${location.origin}/auth/callback?redirectTo=${encodeURIComponent(redirectTo)}`,
         },
       });
 

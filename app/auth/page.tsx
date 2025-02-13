@@ -83,7 +83,7 @@ function AuthContent() {
           data: {
             full_name: name,
           },
-          emailRedirectTo: `${location.origin}/auth/callback`,
+          emailRedirectTo: `${location.origin}/auth/confirm`,
         },
       });
 

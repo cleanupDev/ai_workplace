@@ -17,7 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Header } from "@/components/landing/Header";
 import { Footer } from "@/components/landing/Footer";
 import { createClient } from "@/utils/supabase/client";
-import { toast } from "sonner";
+import { toast, Toaster } from "sonner";
 import { AuthError } from "@supabase/supabase-js";
 
 function AuthContent() {
@@ -25,6 +25,7 @@ function AuthContent() {
   const [signupSuccess, setSignupSuccess] = useState(false);
   const [signupEmail, setSignupEmail] = useState("");
   const [loginError, setLoginError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<string>(useSearchParams().get('tab') || 'login');
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createClient();
@@ -136,7 +137,7 @@ function AuthContent() {
   return (
     <main className="flex-grow flex items-center justify-center p-4">
       <Card className="w-full max-w-md bg-slate-900 border-slate-800">
-        <Tabs defaultValue={searchParams.get('tab') || 'login'} className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2 bg-slate-800/50 p-1">
             <TabsTrigger 
               value="login" 
@@ -268,7 +269,7 @@ function AuthContent() {
                     className="w-full bg-slate-700 hover:bg-slate-600 text-slate-100"
                     onClick={() => {
                       setSignupSuccess(false);
-                      router.push("/auth?tab=login");
+                      setActiveTab('login');
                     }}
                   >
                     Back to Login
@@ -394,6 +395,18 @@ function AuthContent() {
 export default function AuthPage() {
   return (
     <div className="min-h-screen text-slate-100 flex flex-col">
+      <Toaster 
+        theme="dark" 
+        position="top-right"
+        toastOptions={{
+          style: {
+            background: 'rgb(15 23 42)',
+            border: '1px solid rgb(51 65 85)',
+            color: 'rgb(226 232 240)'
+          },
+          className: 'text-sm',
+        }}
+      />
       <Header />
       <Suspense fallback={<div>Loading...</div>}>
         <AuthContent />

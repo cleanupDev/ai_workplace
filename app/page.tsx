@@ -7,7 +7,7 @@ import { Footer } from "@/components/landing/Footer";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#0A0B14] text-slate-100">
+    <div className="min-h-screen text-slate-100">
       <Header />
       <main className="container mx-auto px-4 py-12">
         <Hero />

@@ -131,7 +131,7 @@ function AuthContent() {
       <Header />
       <main className="flex-grow flex items-center justify-center p-4">
         <Card className="w-full max-w-md bg-slate-900 border-slate-800">
-          <Tabs defaultValue="login" className="w-full">
+          <Tabs defaultValue={searchParams.get('tab') || 'login'} className="w-full">
             <TabsList className="grid w-full grid-cols-2 bg-slate-800/50 p-1">
               <TabsTrigger 
                 value="login" 

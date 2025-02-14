@@ -21,14 +21,14 @@ export function Header() {
         {!pathname.startsWith("/auth") && (
           <>
             <Button variant="ghost" className="mr-2" asChild>
-              <Link href="/auth?redirectTo=/dashboard">Login as Human Resource</Link>
+              <Link href="/auth?tab=login&redirectTo=/dashboard">Login as Human Resource</Link>
             </Button>
             <Button
               variant="default"
               className="bg-emerald-500 hover:bg-emerald-600"
               asChild
             >
-              <Link href="/auth?tab=signup">Apply for Position</Link>
+              <Link href="/auth?tab=signup&redirectTo=/dashboard">Apply for Position</Link>
             </Button>
           </>
         )}

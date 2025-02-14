@@ -132,9 +132,19 @@ function AuthContent() {
       <main className="flex-grow flex items-center justify-center p-4">
         <Card className="w-full max-w-md bg-slate-900 border-slate-800">
           <Tabs defaultValue="login" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="login">Login</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 bg-slate-800/50 p-1">
+              <TabsTrigger 
+                value="login" 
+                className="data-[state=active]:bg-slate-900 data-[state=active]:text-emerald-400 text-slate-400 hover:text-slate-100 data-[state=active]:shadow-none"
+              >
+                Login
+              </TabsTrigger>
+              <TabsTrigger 
+                value="signup"
+                className="data-[state=active]:bg-slate-900 data-[state=active]:text-emerald-400 text-slate-400 hover:text-slate-100 data-[state=active]:shadow-none"
+              >
+                Sign Up
+              </TabsTrigger>
             </TabsList>
             <TabsContent value="login">
               <form onSubmit={handleLogin}>

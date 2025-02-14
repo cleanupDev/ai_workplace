@@ -24,6 +24,7 @@ function AuthContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [signupSuccess, setSignupSuccess] = useState(false);
   const [signupEmail, setSignupEmail] = useState("");
+  const [loginError, setLoginError] = useState<string | null>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createClient();
@@ -31,6 +32,7 @@ function AuthContent() {
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
+    setLoginError(null);
 
     const formData = new FormData(event.currentTarget);
     const email = formData.get("email") as string;
@@ -52,8 +54,10 @@ function AuthContent() {
       toast.success("Successfully logged in!");
     } catch (error) {
       if (error instanceof AuthError) {
+        setLoginError(error.message);
         toast.error(error.message);
       } else {
+        setLoginError("An unexpected error occurred. Please try again.");
         toast.error("An unexpected error occurred");
       }
     } finally {
@@ -158,6 +162,11 @@ function AuthContent() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
+                {loginError && (
+                  <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400">
+                    <p className="text-sm font-medium">{loginError}</p>
+                  </div>
+                )}
                 <div className="space-y-2">
                   <Label htmlFor="email">
                     <span className="text-emerald-500">Email</span>
@@ -168,7 +177,9 @@ function AuthContent() {
                     type="email"
                     placeholder="human@example.com"
                     required
-                    className="border-slate-700 bg-slate-800/50 text-slate-100 placeholder:text-slate-400 focus:ring-emerald-500 focus:border-emerald-500"
+                    className={`border-slate-700 bg-slate-800/50 text-slate-100 placeholder:text-slate-400 focus:ring-emerald-500 focus:border-emerald-500 ${
+                      loginError ? 'border-red-500/50' : ''
+                    }`}
                   />
                 </div>
                 <div className="space-y-2">
@@ -180,7 +191,9 @@ function AuthContent() {
                     name="password" 
                     type="password" 
                     required 
-                    className="border-slate-700 bg-slate-800/50 text-slate-100 focus:ring-emerald-500 focus:border-emerald-500"
+                    className={`border-slate-700 bg-slate-800/50 text-slate-100 focus:ring-emerald-500 focus:border-emerald-500 ${
+                      loginError ? 'border-red-500/50' : ''
+                    }`}
                   />
                 </div>
                 <div className="space-y-4">

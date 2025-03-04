@@ -22,14 +22,14 @@ export function Header() {
           <>
             <Button
               variant="default"
-              className="bg-emerald-500 hover:bg-emerald-600 mr-2"
+              className="bg-emerald-500/90 hover:bg-emerald-600 mr-2 transition-all duration-200"
               asChild
             >
               <Link href="/auth?tab=login&redirectTo=/dashboard">Login as Human Resource</Link>
             </Button>
             <Button
               variant="default"
-              className="bg-emerald-500 hover:bg-emerald-600"
+              className="bg-emerald-500 hover:bg-emerald-600 transition-all duration-200 shadow-md shadow-emerald-500/20"
               asChild
             >
               <Link href="/auth?tab=signup&redirectTo=/dashboard">Apply for Position</Link>

@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import { AnimatedBackground } from "@/components/ui/animated-background";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "AI Workplace",
@@ -18,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full">
-      <body className={`${inter.className} bg-[#0A0B14] min-h-full`}>
+      <body className={`${GeistSans.className} bg-[#0A0B14] min-h-full`}>
         <AnimatedBackground />
         <div className="relative">
           {children}

@@ -68,48 +68,14 @@ function AuthContent() {
 
   const handleSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIsLoading(true);
-
+    // Signup is disabled in development mode
     const formData = new FormData(event.currentTarget);
     const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    const confirmPassword = formData.get("confirm-password") as string;
-    const name = formData.get("name") as string;
-
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match");
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            full_name: name,
-          },
-          emailRedirectTo: `${location.origin}/auth/confirm`,
-        },
-      });
-
-      if (error) {
-        throw error;
-      }
-
-      setSignupEmail(email);
-      setSignupSuccess(true);
-      toast.success("Account created successfully!");
-    } catch (error) {
-      if (error instanceof AuthError) {
-        toast.error(error.message);
-      } else {
-        toast.error("An unexpected error occurred");
-      }
-    } finally {
-      setIsLoading(false);
-    }
+    
+    // For demo purposes, show the success screen
+    setSignupEmail(email);
+    setSignupSuccess(true);
+    toast.info("New account registration is disabled in development mode");
   };
 
   const handleOAuthSignIn = async (provider: 'github' | 'google') => {
@@ -137,6 +103,19 @@ function AuthContent() {
   return (
     <main className="flex-grow flex items-center justify-center p-4">
       <Card className="w-full max-w-md bg-slate-900 border-slate-800">
+        {/* Development Banner */}
+        <div className="bg-amber-500/20 border-y border-amber-500/30 px-4 py-3 text-center">
+          <div className="flex items-center justify-center gap-2 mb-1">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <span className="font-bold text-amber-400">Development Mode</span>
+          </div>
+          <p className="text-sm text-amber-200">
+            New user registration is disabled during development.
+            <br />Existing users can still log in.
+          </p>
+        </div>
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2 bg-slate-800/50 p-1">
             <TabsTrigger 
@@ -178,9 +157,7 @@ function AuthContent() {
                     type="email"
                     placeholder="human@example.com"
                     required
-                    className={`border-slate-700 bg-slate-800/50 text-slate-100 placeholder:text-slate-400 focus:ring-emerald-500 focus:border-emerald-500 ${
-                      loginError ? 'border-red-500/50' : ''
-                    }`}
+                    className="border-slate-700 bg-slate-800/50 text-slate-100 placeholder:text-slate-400 focus:ring-emerald-500 focus:border-emerald-500"
                   />
                 </div>
                 <div className="space-y-2">
@@ -192,9 +169,7 @@ function AuthContent() {
                     name="password" 
                     type="password" 
                     required 
-                    className={`border-slate-700 bg-slate-800/50 text-slate-100 focus:ring-emerald-500 focus:border-emerald-500 ${
-                      loginError ? 'border-red-500/50' : ''
-                    }`}
+                    className="border-slate-700 bg-slate-800/50 text-slate-100 focus:ring-emerald-500 focus:border-emerald-500"
                   />
                 </div>
                 <div className="space-y-4">
@@ -376,11 +351,11 @@ function AuthContent() {
                 </CardContent>
                 <CardFooter>
                   <Button
-                    className="w-full bg-emerald-500 hover:bg-emerald-600"
+                    className="w-full bg-emerald-500 hover:bg-emerald-600 opacity-75"
                     type="submit"
-                    disabled={isLoading}
+                    disabled={true}
                   >
-                    {isLoading ? "Creating account..." : "Create account"}
+                    Sign Up Disabled
                   </Button>
                 </CardFooter>
               </form>

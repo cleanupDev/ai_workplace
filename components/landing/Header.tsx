@@ -20,7 +20,11 @@ export function Header() {
       <nav className="h-10 flex items-center">
         {!pathname.startsWith("/auth") && (
           <>
-            <Button variant="ghost" className="mr-2" asChild>
+            <Button
+              variant="default"
+              className="bg-emerald-500 hover:bg-emerald-600 mr-2"
+              asChild
+            >
               <Link href="/auth?tab=login&redirectTo=/dashboard">Login as Human Resource</Link>
             </Button>
             <Button

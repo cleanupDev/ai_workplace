@@ -99,6 +99,13 @@ export default function VirtualWaterCooler() {
   const [activeChat, setActiveChat] = useState(0);
   const [stressLevel, setStressLevel] = useState(0);
 
+  const endBreak = useCallback(() => {
+    setIsOnBreak(false);
+    setBreakTime(300);
+    setChats([]);
+    setStressLevel(0);
+  }, []);
+
   const handleNoResponse = useCallback((chatIndex: number) => {
     setChats((prevChats) => {
       const newChats = [...prevChats];
@@ -112,13 +119,21 @@ export default function VirtualWaterCooler() {
   }, []); // Empty dependency array because it only uses setChats and setStressLevel
 
   useEffect(() => {
-    if (isOnBreak && breakTime > 0) {
-      const timer = setTimeout(() => setBreakTime(breakTime - 1), 1000);
-      return () => clearTimeout(timer);
-    } else if (breakTime === 0) {
-      endBreak();
+    if (!isOnBreak || breakTime <= 0) {
+      return;
     }
-  }, [isOnBreak, breakTime]);
+
+    const timer = setTimeout(() => {
+      if (breakTime === 1) {
+        endBreak();
+        return;
+      }
+
+      setBreakTime(breakTime - 1);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [isOnBreak, breakTime, endBreak]);
 
   useEffect(() => {
     if (isOnBreak) {
@@ -166,13 +181,6 @@ export default function VirtualWaterCooler() {
         };
       });
     setChats(newChats);
-    setStressLevel(0);
-  };
-
-  const endBreak = () => {
-    setIsOnBreak(false);
-    setBreakTime(300);
-    setChats([]);
     setStressLevel(0);
   };
 
